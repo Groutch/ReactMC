@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Image, Modal, Card, Button, Form} from 'semantic-ui-react'
 
+
 class MyContainer extends Component{
     state = { modalOpen: false }
     handleOpen = () => this.setState({ modalOpen: true })

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import logo from './logo.svg';
 import './App.css';
 import MyContainer from './components/MyContainer';
@@ -41,11 +42,29 @@ const imageList2 = [{id:1,
                    {id:3,
                     desc: "Dumque ibi diu moratur commeatus opperiens, quorum translationem ex Aquitania verni imbres solito crebriores prohibebant auctique torrentes, Herculanus advenit protector domesticus, Hermogenis ex magistro equitum filius, apud Constantinopolim, ut supra rettulimus, populari quondam turbela discerpti. quo verissime referente quae Gallus egerat, damnis super praeteritis maerens et futurorum timore suspensus angorem animi quam diu potuit emendabat.",
                     url: "https://picsum.photos/206/219"}];
-console.table(imageList);
+
 console.log(imageList);
-console.table(imageList2);
 
 class App extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      collection: firebase.firestore().collection("react"),
+      query: []
+    }
+  }
+  componentDidMount(){
+    this.renderCard()
+  }
+  renderCard(){
+    let foo = []
+    this.state.collection.get()
+      .then(querySnapshot => querySnapshot.forEach(doc => {
+        foo.push(doc.data())
+        this.setState({query: foo})
+      }))
+      .catch(err => console.log(err))
+  }
   
   render() {
     return (
@@ -55,9 +74,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to Broken React</h1>
         </header>
         <br/>
-        <MyContainer
-            myProps = {imageList}
-        />
+        <MyContainer myProps={this.state.query}/>
       </div>
     );
   }
